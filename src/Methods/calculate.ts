@@ -10,20 +10,21 @@ const calculate = (state: stateType, buttonName: string): stateType => {
         total: null,
         next: buttonName,
       }
-    }
-    if (state.next === '0') {
-      state.next = buttonName;
-    } else if (state.next) {
-      state.next += buttonName;
     } else {
-      state.next = buttonName;
+      if (state.next === '0') {
+        state.next = buttonName;
+      } else if (state.next) {
+        state.next += buttonName;
+      } else {
+        state.next = buttonName;
+      }
     }
 
     return state;
   };
 
   if (isOperation(buttonName)) {
-    if (state.next) {
+    if (!state.total && state.next) {
       state = {
         total: state.next,
         next: null,
@@ -32,7 +33,7 @@ const calculate = (state: stateType, buttonName: string): stateType => {
     }
 
     if (state.operation && state.next && state.operation) {
-      const result = Number(operate(state.total, state.next, state.operation)).toString();
+      const result = Number(operate(state.total, state.next, state.operation).total).toString();
       state = {
         total: result,
         next: null,
@@ -57,12 +58,12 @@ const calculate = (state: stateType, buttonName: string): stateType => {
       if (state.next) {
         state = {
           ...state,
-          next: '-' + state.next,
+          next: (Number(state.next)*-1).toString(),
         }
       } else if (state.total) {
         state = {
           ...state,
-          total: '-' + state.total,
+          total: (Number(state.total)*-1).toString(),
         }
       }
 
@@ -90,12 +91,26 @@ const calculate = (state: stateType, buttonName: string): stateType => {
     
     case '.':
       if (state.next) {
-        if (state.next.includes(buttonName)) {
+        if (!state.next.includes(buttonName)) {
           state = {
             ...state,
             next: state.next += '.',
           }
         }
+      } else {
+        if (state.operation) {
+          state = {
+            ...state,
+            next: '0.',
+          }
+        } else {
+          state = {
+            ...state,
+            total: null,
+            next: '0.',
+          }
+        }
+
       }
 
       break;

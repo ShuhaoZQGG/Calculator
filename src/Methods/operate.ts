@@ -31,7 +31,7 @@ const operation = (total: string | null, next: string | null, operation: string 
     case '+':
       if (state.next) {
         state = {
-          total: (Number(state.total) / Number(state.next)).toString(),
+          total: (Number(state.total) + Number(state.next)).toString(),
           next: null,
           operation: null,
         };
