@@ -17,7 +17,8 @@ function App() {
   const handleClick = (buttonName: string) => {
     const calculation = calculate(state, buttonName);
 
-    setState(calculation);
+    setState({...calculation});
+    console.log(state);
   }
   return (
     <div className="App">

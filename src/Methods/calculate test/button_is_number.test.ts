@@ -1,5 +1,23 @@
 import calculate from '../calculate';
 import { stateType } from '../../Interface/state';
+test('If the button is a number: state next is null, state next should be changed to the number', ()=> {
+  const state: stateType = {
+    total: null,
+    next: null,
+    operation: null,
+  }
+
+  const buttonName = '2'
+
+  const expectedState: stateType = {
+    total: null,
+    next: '2',
+    operation: null,
+  }
+  expect(calculate(state, buttonName)).toMatchObject(expectedState);
+})
+
+
 test('If the button is a number: state next should keep appending string to the current state next if state next != 0', ()=> {
   const state: stateType = {
     total: null,

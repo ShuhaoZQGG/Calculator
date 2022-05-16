@@ -55,3 +55,21 @@ test('If all states are not null: if operator == /, total is updated as next / t
 
   expect(calculate(state,buttonName)).toMatchObject(expectedState);
 })
+
+test('If the total is not null, next is null, and button is any operator: if operator == ×, total is updated as the next, next is updated to null, operator is updated to ×', () => {
+  const state: stateType = {
+    total: '6',
+    next: null,
+    operation: null,
+  }
+
+  const buttonName = '×';
+
+  const expectedState: stateType = {
+    total: '6',
+    next: null,
+    operation: '×',
+  }
+
+  expect(calculate(state,buttonName)).toMatchObject(expectedState);
+})

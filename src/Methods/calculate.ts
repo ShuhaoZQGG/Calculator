@@ -21,9 +21,7 @@ const calculate = (state: stateType, buttonName: string): stateType => {
     }
 
     return state;
-  };
-
-  if (isOperation(buttonName)) {
+  } else if (isOperation(buttonName)) {
     if (!state.total && state.next) {
       state = {
         total: state.next,
@@ -32,6 +30,12 @@ const calculate = (state: stateType, buttonName: string): stateType => {
       };
     }
 
+    if (state.total && !state.next) {
+      state = {
+        ...state,
+        operation: buttonName,
+      };
+    } 
     if (state.operation && state.next && state.operation) {
       const result = Number(operate(state.total, state.next, state.operation).total).toString();
       state = {
@@ -42,92 +46,92 @@ const calculate = (state: stateType, buttonName: string): stateType => {
     }
 
     return state;
-  };
-
-  switch (buttonName) {
-    case 'AC':
-      state = {
-        total: null,
-        next: null,
-        operation: null,
-      };
-
-      break;
-
-    case '+/-':
-      if (state.next) {
+  } else {
+    switch (buttonName) {
+      case 'AC':
         state = {
-          ...state,
-          next: (Number(state.next)*-1).toString(),
-        }
-      } else if (state.total) {
-        state = {
-          ...state,
-          total: (Number(state.total)*-1).toString(),
-        }
-      }
-
-      break;
-    
-    case '%':
-      if (state.operation && state.next) {
-        const result = (Number(operate(state.total, state.next, state.operation).total) / 100).toString();
-
-        state = {
-          total: result,
+          total: null,
           next: null,
           operation: null,
-        }
-      }
-
-      if (state.next) {
-        const result = (Number(state.next)/100).toString();
-        state = {
-          ...state,
-          next: result,
-        }
-      }
-      break;
-    
-    case '.':
-      if (state.next) {
-        if (!state.next.includes(buttonName)) {
+        };
+  
+        break;
+  
+      case '+/-':
+        if (state.next) {
           state = {
             ...state,
-            next: state.next += '.',
+            next: (Number(state.next)*-1).toString(),
+          }
+        } else if (state.total) {
+          state = {
+            ...state,
+            total: (Number(state.total)*-1).toString(),
           }
         }
-      } else {
-        if (state.operation) {
+  
+        break;
+      
+      case '%':
+        if (state.operation && state.next) {
+          const result = (Number(operate(state.total, state.next, state.operation).total) / 100).toString();
+  
+          state = {
+            total: result,
+            next: null,
+            operation: null,
+          }
+        }
+  
+        if (state.next) {
+          const result = (Number(state.next)/100).toString();
           state = {
             ...state,
-            next: '0.',
+            next: result,
+          }
+        }
+        break;
+      
+      case '.':
+        if (state.next) {
+          if (!state.next.includes(buttonName)) {
+            state = {
+              ...state,
+              next: state.next += '.',
+            }
           }
         } else {
+          if (state.operation) {
+            state = {
+              ...state,
+              next: '0.',
+            }
+          } else {
+            state = {
+              ...state,
+              total: null,
+              next: '0.',
+            }
+          }
+  
+        }
+  
+        break;
+  
+      case '=':
+        if (state.next && state.total && state.operation) {
+          const result = Number(operate(state.total, state.next, state.operation).total).toString();
           state = {
-            ...state,
-            total: null,
-            next: '0.',
+            total: result,
+            next: null,
+            operation: null,
           }
         }
-
-      }
-
-      break;
-
-    case '=':
-      if (state.next && state.total && state.operation) {
-        const result = Number(operate(state.total, state.next, state.operation).total).toString();
-        state = {
-          total: result,
-          next: null,
-          operation: null,
-        }
-      }
-      break;
+        break;
+    }
+  
+    return state;
   }
-
-  return state;
 }
 
 export default calculate;

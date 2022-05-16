@@ -1,13 +1,23 @@
 import React from "react";
-const Button = (props: {name: string, clickHandler: (buttonName: string) => void}) => {
-  const { name, clickHandler } = props;
+import './Stylesheets/Button.css';
+const Button = (props: {name: string, clickHandler: (buttonName: string) => void, orange?: boolean, wide?: boolean}) => {
+  const { name, orange, wide, clickHandler } = props;
   const handleClick = () => {
     clickHandler(name);
   }
+
+  const className = [
+    "component-button",
+    orange ? "orange" : "",
+    wide ? "wide" : "",
+  ];  
+  
   return (
-    <button className={name} onClick={handleClick}>
+    <div className={className.join(' ').trim()}>
+    <button name={name}  onClick={handleClick}>
       {name}
     </button>
+    </div>
   )
 }
 

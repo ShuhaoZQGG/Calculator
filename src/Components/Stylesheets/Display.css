@@ -1,16 +1,13 @@
 .display {
-  margin-top: 10%;
-  height: 0;
-  padding-top: 10%;
-  background-color: gray;
-  width: 40%;
+  background-color: #858694;
+  color: white;
   text-align: right;
-  position: relative;
+  font-weight: 200;
+  flex: 0 0 auto;
+  width: 100%;
 }
 
-.display_value {
-  position: absolute;
-  right: 10%;
-  top: 30%;
-  margin-right: 5%;
+.display > div {
+  font-size: 2.5rem;
+  padding: 0.2rem 0.7rem 0.1rem 0.5rem;
 }
